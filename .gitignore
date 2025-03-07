@@ -1,0 +1,13 @@
+# Ignore virtual environment
+venv/
+
+# Byte-compiled / cached
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore system files
+.DS_Store
+
+# Ignore environment variables (if using a .env file)
+.env

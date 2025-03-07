@@ -1,0 +1,8 @@
+{
+    "production": {
+        "app_function": "dfa_api.app", 
+        "aws_region": "us-east-1",
+        "s3_bucket": "dfa-api-deployment-bucket",
+        "cors": true
+    }
+}
