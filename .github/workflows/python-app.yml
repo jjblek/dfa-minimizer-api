@@ -1,0 +1,46 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.10
+        cache: "pip"
+
+    - name: Set up the virtual environment and install dependencies
+      run: |
+        python -m venv env
+        source env/bin/activate
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Deploy to AWS with Zappa
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        # Activate the virtual environment
+        source env/bin/activate
+        
+        # Install the Zappa CLI
+        pip install zappa
+        
+        # Install the AWS CLI
+        pip install awscli
+        
+        # Configure AWS CLI
+        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        
+        # Deploy with Zappa (ensure "production" is the correct environment)
+        zappa update production
