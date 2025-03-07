@@ -71,5 +71,11 @@ jobs:
         # Install the AWS CLI
         pip install awscli
         
-        # Deploy with Zappa (ensure "production" is the correct environment)
-        zappa update production
+        # Check if the function exists before updating
+        if zappa status production; then
+          echo "Updating existing deployment..."
+          zappa update production
+        else
+          echo "Deploying new function..."
+          zappa deploy production
+        fi
